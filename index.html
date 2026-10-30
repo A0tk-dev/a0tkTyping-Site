@@ -222,6 +222,25 @@ details summary{cursor:pointer;margin:8px 0;color:var(--sub);font-size:13px}
 .adb .lb{white-space:nowrap}
 .sus{color:#d97706}.sus2{color:var(--ng)}
 .mtb{background:var(--wb);border:1px solid var(--wbd);color:var(--wt);border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:14px;line-height:1.6;flex:none;white-space:pre-wrap;word-break:break-word}
+@property --rh{syntax:"<number>";inherits:true;initial-value:0}
+@keyframes rbh{to{--rh:360}}
+body.rb{animation:rbh 9s linear infinite}
+body.rb::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;mix-blend-mode:color;opacity:.55;background:linear-gradient(115deg,hsl(calc(var(--rh) + 0) 100% 58%),hsl(calc(var(--rh) + 60) 100% 58%),hsl(calc(var(--rh) + 120) 100% 58%),hsl(calc(var(--rh) + 180) 100% 58%),hsl(calc(var(--rh) + 240) 100% 58%),hsl(calc(var(--rh) + 300) 100% 58%),hsl(calc(var(--rh) + 360) 100% 58%))}
+body.rb::after{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:2;mix-blend-mode:soft-light;opacity:.5;background:radial-gradient(circle at 20% 25%,hsl(calc(var(--rh) + 40) 100% 70%),transparent 45%),radial-gradient(circle at 80% 70%,hsl(calc(var(--rh) + 200) 100% 70%),transparent 45%)}
+body.rb #disp{background:linear-gradient(90deg,hsl(calc(var(--rh) + 0) 95% 52%),hsl(calc(var(--rh) + 70) 95% 50%),hsl(calc(var(--rh) + 140) 95% 48%),hsl(calc(var(--rh) + 210) 95% 52%),hsl(calc(var(--rh) + 280) 95% 54%));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px hsl(var(--rh) 100% 60% / .45))}
+body.rb #stage{border-color:hsl(var(--rh) 95% 60%);box-shadow:0 0 0 2px hsl(var(--rh) 95% 60%),0 0 34px 6px hsl(calc(var(--rh) + 90) 100% 60% / .45)}
+body.rb .chip.tm{border-color:hsl(calc(var(--rh) + 180) 95% 55%)}
+body.rb .key{box-shadow:0 0 10px hsl(calc(var(--rh) + var(--kh,0)) 95% 60% / .5)}
+body.rb .key.nx{background:hsl(calc(var(--rh) + 180) 90% 52%);border-color:transparent}
+body.rb .app::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:linear-gradient(115deg,hsl(calc(var(--rh) + 0) 100% 55%),hsl(calc(var(--rh) + 60) 100% 55%),hsl(calc(var(--rh) + 120) 100% 55%),hsl(calc(var(--rh) + 180) 100% 55%),hsl(calc(var(--rh) + 240) 100% 55%),hsl(calc(var(--rh) + 300) 100% 55%),hsl(calc(var(--rh) + 360) 100% 55%));opacity:.22}
+html[data-theme=dark] body.rb .app::before{opacity:.07}
+body.rm.rb .app::before{display:none}
+body.rm.rb{animation:none!important}
+body.rm.rb::before,body.rm.rb::after{display:none}
+body.rm.rb #disp{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit;filter:none}
+.cfc{position:fixed;left:0;top:0;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;z-index:40;max-width:90%;text-align:center}
+.fxs{font:inherit;font-size:12px;padding:2px 4px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);max-width:40%}
 </style>
 </head>
 <body>
@@ -238,7 +257,7 @@ details summary{cursor:pointer;margin:8px 0;color:var(--sub);font-size:13px}
  </div>
 
  <div class="scr on" id="home"><div class="card">
-  <div class="hd"><h2>タイピングを鍛えよう！</h2><p>時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう</p></div>
+  <div class="hd"><h2>タイピングを鍛えよう！</h2><p id="gr">時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう</p></div>
   <div class="seg" id="mds"><button data-m="normal">通常</button><button data-m="daily">日替わり</button><button data-m="practice">ゆっくり練習</button></div>
   <p class="hint" id="mdh" style="margin:0 0 6px"></p>
   <div class="seg" id="lvs"><button data-lv="easy">簡単<small>60秒</small></button><button data-lv="normal">普通<small>90秒</small></button><button data-lv="hard">難しい<small>120秒</small></button></div>
@@ -270,6 +289,7 @@ details summary{cursor:pointer;margin:8px 0;color:var(--sub);font-size:13px}
  </div></div>
 </div>
 
+<div class="toast" id="toast" hidden></div>
 <div id="rd" hidden>
 <header><div class="rh"><button class="rback" id="rdc">← 戻る</button><div class="rbrand"><span class="rlogo">⌨</span><b>Aotoka タイピング</b></div>
 <nav><button data-t="terms">利用規約</button><button data-t="privacy">プライバシーポリシー</button><button data-t="credits">クレジット</button></nav></div></header>
@@ -372,6 +392,7 @@ details summary{cursor:pointer;margin:8px 0;color:var(--sub);font-size:13px}
  <h2>言葉の管理（管理者）</h2>
  <div class="seg" id="wml" style="margin:8px 0"><button data-lv="easy">簡単</button><button data-lv="normal">普通</button><button data-lv="hard">難しい</button></div>
  <div class="row2"><input class="inp" id="wd" placeholder="表示（例：新幹線）" maxlength="30"><input class="inp" id="wr" placeholder="読み・ひらがな（例：しんかんせん）" maxlength="60"></div>
+ <select class="inp" id="wfx" style="margin:6px 0 0"><option value="">特殊効果：なし</option><option value="rainbow">🌈 打っている間、画面が虹色に光る</option><option value="confetti">🎉 打ち終えると、紙吹雪が舞う</option></select>
  <button class="big" id="wa" style="margin-top:0">追加</button>
  <details><summary>まとめて登録</summary><textarea class="inp" id="wb" rows="6" placeholder="1行に「表示|読み」。[簡単][普通][難しい]の行で追加先を切り替えられます" style="resize:vertical"></textarea><button class="big sec" id="wbb" style="margin-top:0">まとめて登録</button></details>
  <details><summary>書き出し（バックアップ）</summary><textarea class="inp" id="wx" rows="6" readonly style="resize:vertical"></textarea><button class="big sec" id="wxc" style="margin-top:0">コピー</button></details>
@@ -565,7 +586,7 @@ try{var sv=JSON.parse(localStorage.getItem("aotoka_typing")||"{}");for(var q in 
 if(S.rm===null){try{S.rm=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){S.rm=false}}
 function save(){try{localStorage.setItem("aotoka_typing",JSON.stringify(S))}catch(e){}}
 function applyS(){
- document.body.classList.toggle("nofuri",!S.furi);if(running)setTimeout(fitAll,0);
+ document.body.classList.toggle("nofuri",!S.furi);if(S.rm)document.body.classList.remove("rb");if(running)setTimeout(fitAll,0);
  document.body.classList.toggle("noguide",!S.guide);
  document.body.classList.toggle("nokb",!S.kb);document.body.classList.toggle("nofg",!S.fg);
  soundOn=S.snd;vol=S.vol;
@@ -593,7 +614,7 @@ var TK=[],bnT=0;
 var BS=[[30,1],[60,2.5],[90,2.5],[120,3.5]],CYC=BS[BS.length-1][0];/* [連続回数,追加秒] 120回で一巡してリセット */
 function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function ruby(d,k){return /[\u4e00-\u9fff]/.test(d)?"<ruby>"+esc(d)+"<rt>"+esc(k)+"</rt></ruby>":esc(d)}
-function pw(x){var p=x.split("|");return{k:p[1],d:p[0]}}
+function pw(x){var p=x.split("|"),f=p[2]||"";return{k:p[1],d:p[0],x:["rainbow","confetti"].indexOf(f)>=0?f:""}}
 function h32(t){var h=2166136261;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function dayIdOf(off){var j=new Date(Date.now()+32400000-864e5*(off||0));return j.getUTCFullYear()+("0"+(j.getUTCMonth()+1)).slice(-2)+("0"+j.getUTCDate()).slice(-2)}
 function dailyList(){
@@ -610,7 +631,7 @@ function nextWord(){
  }
  var w=queue.pop();lastK=w.k;return w;
 }
-function start(){
+function start(){document.body.classList.remove("rb");
  if(S.mode==="daily"){
   if(!WLOADED){$("mdh").hidden=false;$("mdh").textContent="言葉を読み込めていないため、日替わりは今は遊べません。通信状況を確認して、少し待ってからお試しください。";loadWords();return}
   dayWords=dailyList();playDay=dayIdOf(0);
@@ -668,6 +689,7 @@ function draw(){
 function nextBS(){var c=combo%CYC,n=BS.filter(function(x){return x[0]>c})[0]||BS[0];return [n[0]-c,n[1]]}
 function addHit(){
  hit++;combo++;if(combo>maxCombo)maxCombo=combo;
+ if(combo%100===0){confetti();toast("🔥 "+combo+"連続！")}
  var cy=combo%CYC||CYC;
  if(S.mode!=="practice")BS.forEach(function(x){if(cy===x[0]){bonus+=x[1];var e=$("bn");e.textContent="+"+x[1]+"秒";e.classList.remove("go");void e.offsetWidth;e.classList.add("go");clearTimeout(bnT);bnT=setTimeout(function(){e.classList.remove("go")},1000)}});
  var b=Math.floor((Date.now()-t0)/10000);while(buckets.length<=b)buckets.push(0);buckets[b]++;
@@ -690,12 +712,12 @@ function key(e){
  if(t.o.indexOf(nb)>=0&&!t.o.some(function(x){return x.length>nb.length&&x.indexOf(nb)===0&&nb!=="n"})){
   if(nb==="n"&&t.o.indexOf("nn")>=0)swallow=true;
   t.done=nb;ti++;bf="";
-  if(ti>=toks.length){wi++;load();return}
+  if(ti>=toks.length){if(curW.x==="confetti")confetti();if(curW.x==="rainbow"&&!S.rm)document.body.classList.add("rb");wi++;load();return}
  }
  draw();
 }
 function finish(abort){
- running=false;clearInterval(timer);document.body.classList.remove("playing");
+ running=false;clearInterval(timer);document.body.classList.remove("playing","practice","rb");
  if(abort){show("home");return}
  if(!failed)play("done");
  var el0=(Date.now()-t0)/1000,tot=Math.max(1,S.t>0?Math.min(el0,S.t+bonus):el0);
@@ -717,6 +739,8 @@ function finish(abort){
  if(nb&&wi>0&&fbOn()){pend={name:S.name||"",wi:wi,kpm:Math.min(kpm,999),acc:acc,lv:dl?"daily":S.lv,ohk:ohOn(),day:dl?playDay:""};setTimeout(function(){loadStatus().then(function(){if(MAINT.on)$("best").textContent+="（メンテナンス中のため、ランキングへの登録は一時停止しています）";else openSM()})},600)}
  $("rmode").textContent=ohOn()?(failed?"一発勝負：失敗（ミスで終了）":"一発勝負：成功！"):"";
  $("rmode").style.color=failed?"var(--ng)":"var(--ok)";
+ if(S.mode!=="practice"&&!failed&&acc===100&&wi>=10&&!$("rmode").textContent){$("rmode").textContent="✨ ノーミス達成！";$("rmode").style.color="var(--ok)"}
+ if($("rk").textContent==="S")setTimeout(confetti,350);
  show("res");
 }
 /* ===== Firebase ランキング (REST API / SDK不要) =====
@@ -745,6 +769,7 @@ function markSrc(b){
 }
 /* ===== お知らせ（新しいものを先頭に追加していく。d=日付 t=見出し l=内容） ===== */
 var NEWS=[
+ {d:"2026-10-28",t:"隠し要素",l:["いくつか隠し要素を追加（探してみてください）"]},
  {d:"2026-10-27",t:"ランキングの整理・メンテナンス表示",l:["ランキングを、今週・先週（日替わりは今日・昨日）だけに整理","メンテナンス中は、画面の上に案内を出し、ランキングへの登録を一時停止できるように"]},
  {d:"2026-10-24",t:"日替わり・ゆっくり練習・報告機能を追加",l:["日替わりチャレンジを追加（毎日0時に問題が変わり、専用ランキングあり）","ゆっくり練習モードを追加（時間制限なし・ランキングなし）","ランキングで先週（昨日）の結果も見られるように","ランキングに「報告」ボタンを追加","出題する言葉は、サーバーから読み込むように変更（運営がアプリ内から追加できます）"]},
  {d:"2026-10-23",t:"設定画面の刷新・お知らせ管理・ボーナス調整",l:["設定画面を全面的に作り直し（画面いっぱいに表示し、項目をグループ分け）","管理者がお知らせを追加・取り消しできる機能を追加（画面上部のバナー表示にも対応）","連続ボーナスの段階を変更（30回で+1秒、60・90回で+2.5秒、120回で+3.5秒、以降くり返し）","ランキングの順位を「完了数 → 正確率 → 打鍵/分」の順に変更","出題する言葉を追加","簡単モードの言葉を30語追加"]},
@@ -931,7 +956,7 @@ function renderWM(msg){
  if(msg!==undefined){$("wme").style.color="var(--ok)";$("wme").textContent=msg}
  [].forEach.call($("wml").children,function(b){b.classList.toggle("on",b.dataset.lv===wmLv)});
  var l=WSRV[wmLv];
- $("wl").innerHTML='<p class="hint" style="text-align:left;margin:0 0 4px">'+LVN[wmLv]+'：'+l.length+'語'+(l.length?'':'（まだありません。追加すると、全員の出題に反映されます）')+'</p>'+l.map(function(e,i){var q=pw(e);return '<div class="wi"><span>'+esc(q.d)+'<small>'+esc(q.k)+'</small></span><button class="lb" data-wd="'+i+'">削除</button></div>'}).join("");
+ $("wl").innerHTML='<p class="hint" style="text-align:left;margin:0 0 4px">'+LVN[wmLv]+'：'+l.length+'語'+(l.length?'':'（まだありません。追加すると、全員の出題に反映されます）')+'</p>'+l.map(function(e,i){var q=pw(e);return '<div class="wi"><span>'+esc(q.d)+'<small>'+esc(q.k)+'</small></span><select class="fxs" data-wf="'+i+'"><option value="">効果なし</option><option value="rainbow"'+(q.x==="rainbow"?' selected':'')+'>🌈 虹色</option><option value="confetti"'+(q.x==="confetti"?' selected':'')+'>🎉 紙吹雪</option></select><button class="lb" data-wd="'+i+'">削除</button></div>'}).join("");
 }
 /* --- NGワードの管理 --- */
 var gflat=[];
@@ -970,6 +995,49 @@ function renderRP(msg){
  $("rpl").innerHTML=repG.length?repG.map(function(g,i){return '<div class="nwi"><b>'+esc(g.name)+'</b><small>'+esc(boardLabel(g.board))+'　・'+g.n+'件</small><div>'+esc(Object.keys(g.reasons).join("、"))+'</div><div style="margin-top:4px"><button class="lb dl" data-rd="'+i+'">記録を削除</button>　<button class="lb" data-rk="'+i+'">報告を却下</button></div></div>'}).join(""):'<p class="hint">報告はありません。</p>';
 }
 function dropReports(g){return Promise.all(g.rids.map(function(rid){return annReq("DELETE","/reports/"+rid)}))}
+/* ===== 小ネタ ===== */
+/* 紙吹雪：canvasで描く物理シミュレーション（重力・空気抵抗・ひらひら・回転・色々な形）。mode:"cannon"=左右下から発射、"rain"=上から降る */
+var cfC=null,cfP=[],cfRaf=0,CFCOL=["#ff4d6d","#ffb703","#ffd60a","#80ed99","#38bdf8","#6366f1","#c084fc","#ff8fab","#ffffff"];
+function cfAdd(x,y,ang,spd,n,spread){
+ for(var i=0;i<n;i++){var a=ang+(Math.random()-.5)*spread,v=spd*(0.5+Math.random()*0.75);
+  cfP.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:5+Math.random()*6,h:8+Math.random()*9,r:Math.random()*6.28,vr:(Math.random()-.5)*0.35,ph:Math.random()*6.28,fl:0.05+Math.random()*0.12,c:CFCOL[Math.floor(Math.random()*CFCOL.length)],t:Math.floor(Math.random()*4),life:0,max:150+Math.random()*100})}
+}
+function confetti(o){
+ if(S.rm)return;
+ var cv=cfC;if(!cv){cv=cfC=document.createElement("canvas");cv.className="cfc";document.body.appendChild(cv)}
+ var dpr=Math.min(window.devicePixelRatio||1,2),W=innerWidth,H=innerHeight;
+ if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+"px";cv.style.height=H+"px"}
+ if(o&&o.mode==="rain"){for(var i=0;i<80;i++)cfAdd(Math.random()*W,-20-Math.random()*H*0.5,Math.PI/2,1.5+Math.random()*2,1,0.6)}
+ else{var k=H/700*7+9;cfAdd(0,H,-Math.PI/3.1,k,48,0.8);cfAdd(W,H,-Math.PI+Math.PI/3.1,k,48,0.8);cfAdd(W/2,H*0.92,-Math.PI/2,k*0.9,34,1.1)}
+ if(!cfRaf)cfRaf=requestAnimationFrame(cfStep);
+}
+function cfStep(){
+ var cv=cfC,g=cv.getContext("2d"),W=innerWidth,H=innerHeight;
+ g.setTransform(cv.width/W,0,0,cv.height/H,0,0);g.clearRect(0,0,W,H);
+ for(var i=cfP.length-1;i>=0;i--){
+  var p=cfP[i];p.life++;
+  p.vx*=0.985;p.vy=p.vy*0.986+0.3;
+  p.x+=p.vx+Math.sin(p.ph+p.life*0.05)*0.7;p.y+=p.vy;p.r+=p.vr;p.ph+=0.02;
+  var al=p.life>p.max-40?(p.max-p.life)/40:1;
+  if(p.y>H+30||al<=0){cfP.splice(i,1);continue}
+  g.save();g.globalAlpha=al;g.translate(p.x,p.y);g.rotate(p.r);g.scale(1,Math.cos(p.life*p.fl*2+p.ph));g.fillStyle=p.c;
+  if(p.t===0)g.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+  else if(p.t===1){g.beginPath();g.arc(0,0,p.w/2,0,6.283);g.fill()}
+  else if(p.t===2)g.fillRect(-1.6,-p.h*1.1,3.2,p.h*2.2);
+  else{g.beginPath();g.moveTo(0,-p.h/2);g.lineTo(p.w/2,0);g.lineTo(0,p.h/2);g.lineTo(-p.w/2,0);g.closePath();g.fill()}
+  g.restore();
+ }
+ if(cfP.length)cfRaf=requestAnimationFrame(cfStep);else{cfRaf=0;g.clearRect(0,0,W,H)}
+}
+var toastT=0;
+function toast(t){var e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},2600)}
+function greet(){
+ var d=new Date(),h=d.getHours(),md=(d.getMonth()+1)*100+d.getDate(),g=h<5?"🌙 夜ふかしさんですね。無理せずに！　":h<11?"☀ おはようございます。　":h>=18?"🌙 こんばんは。　":"";
+ $("gr").textContent=g+"時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう";
+ var lg=document.querySelector(".bar .logo");
+ if(md===1031)lg.textContent="🎃";else if(md===1224||md===1225)lg.textContent="🎄";else if(md>=101&&md<=103)lg.textContent="🎍";
+}
+var lgN=0,lgT=0,kSeq=[],KON=["arrowup","arrowup","arrowdown","arrowdown","arrowleft","arrowright","arrowleft","arrowright","b","a"];
 /* ===== 運営からのお知らせ（Firestore: announcements。読むのは誰でも、書くのは管理者のみ） ===== */
 var annC=[];
 function chk(r){if(r.ok)return;return r.json().then(function(j){throw new Error((j.error&&j.error.status)||r.status)},function(){throw new Error(r.status)})}
@@ -1138,22 +1206,28 @@ $("wa").onclick=function(){
  if(!readOk(r)){m.textContent="読みは、ひらがな（と「ー」）で入力してください";return}
  if(allDisp()[d]){m.textContent="同じ言葉がすでにあります";return}
  $("wa").disabled=true;m.style.color="var(--sub)";m.textContent="追加中…";
- cfgCommit("words_"+wmLv,"list",[d+"|"+r]).then(function(){$("wd").value="";$("wr").value="";$("wa").disabled=false;return loadWords()}).then(function(){renderWM("追加しました")}).catch(fail(m,$("wa")));
+ cfgCommit("words_"+wmLv,"list",[d+"|"+r+($("wfx").value?"|"+$("wfx").value:"")]).then(function(){$("wd").value="";$("wr").value="";$("wa").disabled=false;return loadWords()}).then(function(){renderWM("追加しました")}).catch(fail(m,$("wa")));
 };
 $("wbb").onclick=function(){
  var m=$("wme"),lv=wmLv,out={easy:[],normal:[],hard:[]},bad=0,dup=0,seen=allDisp();
  $("wb").value.split(/\r?\n/).forEach(function(line){
   line=line.trim();if(!line)return;
   var h=line.match(/^\[(簡単|普通|難しい)\]$/);if(h){lv=LVJ[h[1]];return}
-  var q=line.split("|");if(q.length!==2){bad++;return}
-  var d=q[0].trim(),r=q[1].trim();if(!d||d.length>30||!readOk(r)){bad++;return}
-  if(seen[d]){dup++;return}seen[d]=1;out[lv].push(d+"|"+r);
+  var q=line.split("|");if(q.length<2||q.length>3){bad++;return}
+  var d=q[0].trim(),r=q[1].trim(),fx=(q[2]||"").trim();if(!d||d.length>30||!readOk(r)||(fx&&["rainbow","confetti"].indexOf(fx)<0)){bad++;return}
+  if(seen[d]){dup++;return}seen[d]=1;out[lv].push(d+"|"+r+(fx?"|"+fx:""));
  });
  var n=out.easy.length+out.normal.length+out.hard.length;
  if(!n){m.style.color="var(--ng)";m.textContent="追加できる言葉がありません（形式・読みの誤り"+bad+"件、重複"+dup+"件）";return}
  $("wbb").disabled=true;m.style.color="var(--sub)";m.textContent="登録中…";
  var jobs=[];["easy","normal","hard"].forEach(function(l){for(var i=0;i<out[l].length;i+=200)jobs.push([l,out[l].slice(i,i+200)])});
  jobs.reduce(function(p,j){return p.then(function(){return cfgCommit("words_"+j[0],"list",j[1])})},Promise.resolve()).then(function(){$("wb").value="";$("wbb").disabled=false;return loadWords()}).then(function(){renderWM("登録しました："+n+"語（形式・読みの誤り"+bad+"件、重複"+dup+"件はスキップ）")}).catch(fail(m,$("wbb")));
+};
+$("wl").onchange=function(e){
+ var sel=e.target.closest("[data-wf]");if(!sel)return;var old=WSRV[wmLv][+sel.dataset.wf];if(!old)return;
+ var q=pw(old),nw=q.d+"|"+q.k+(sel.value?"|"+sel.value:""),m=$("wme");if(nw===old)return;
+ sel.disabled=true;m.style.color="var(--sub)";m.textContent="変更中…";
+ cfgCommit("words_"+wmLv,"list",[old],true).then(function(){return cfgCommit("words_"+wmLv,"list",[nw])}).then(function(){return loadWords()}).then(function(){renderWM("効果を変更しました")}).catch(fail(m,null));
 };
 $("wl").onclick=function(e){
  var b=e.target.closest("[data-wd]");if(!b)return;var w=WSRV[wmLv][+b.dataset.wd];if(!w)return;
@@ -1191,6 +1265,13 @@ $("gl").onclick=function(e){
  if(!b.dataset.c){b.dataset.c="1";b.textContent="もう一度押すと削除";setTimeout(function(){b.dataset.c="";b.textContent="削除"},3000);return}
  b.disabled=true;ngCommit(g.t,[g.w],true).then(function(){return Promise.all([loadNGA(),loadNG()])}).then(function(){renderGM("削除しました")}).catch(fail($("gme"),null));
 };
+greet();
+document.querySelector(".bar .logo").onclick=function(){var n=Date.now();lgN=(n-lgT>1500)?1:lgN+1;lgT=n;if(lgN>=7){lgN=0;confetti();confetti({mode:"rain"});toast("🎉 見つけたね！ いつもありがとう")}};
+document.addEventListener("keydown",function(e){
+ if(running||document.querySelector(".mask.on")||!$("rd").hidden)return;
+ kSeq.push((e.key||"").toLowerCase());if(kSeq.length>KON.length)kSeq.shift();
+ if(kSeq.join()===KON.join()){kSeq=[];confetti();confetti({mode:"rain"});toast("🎮 コマンド発動！");if(!S.rm){document.body.classList.add("rb");setTimeout(function(){if(!running)document.body.classList.remove("rb")},8000)}}
+});
 $("sbb").onclick=function(){openSB(S.mode==="daily"?"daily":S.lv,S.ohk)};
 $("sbq").onclick=function(){adminOut();sbOff=0;adminUI();renderAnn();renderSB("ログアウトしました")};
 $("sbr").onclick=function(e){var rb=e.target.closest(".rpt");if(rb){var rr=rowsC[+rb.dataset.i];if(rr)openReport(rr);return}var b=e.target.closest(".dl");if(!b||!isAdmin())return;var r=rowsC[+b.dataset.i];if(!r)return;
