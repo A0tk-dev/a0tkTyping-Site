@@ -221,6 +221,16 @@ details summary{cursor:pointer;margin:8px 0;color:var(--sub);font-size:13px}
 .practice .cbw{display:none}
 .adb .lb{white-space:nowrap}
 .sus{color:#d97706}.sus2{color:var(--ng)}
+.mtv{position:fixed;inset:0;z-index:8;background:var(--bg);color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;overflow-y:auto}
+.mtv[hidden],#mty[hidden],#mtt[hidden],#again[hidden]{display:none}
+#mtlist{max-height:150px;overflow:auto;border:1px solid var(--bd);border-radius:10px;padding:4px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start}
+#mtlist .wch{font:inherit;font-size:13px;padding:3px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--box);color:var(--tx);cursor:pointer}
+#mtlist .wch:hover{border-color:var(--ac)}
+.mtv .mta{background:none;border:0;color:var(--ac);text-decoration:underline;cursor:pointer;font-family:inherit;padding:6px;position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;font-size:13px}
+.mtv .nog{width:88px;height:88px;border-radius:50%;border:9px solid #d6453d;position:relative;flex:none;margin-bottom:18px}
+.mtv .nog:after{content:"";position:absolute;left:50%;top:50%;width:calc(100% + 18px);height:9px;background:#d6453d;transform:translate(-50%,-50%) rotate(-45deg);border-radius:5px}
+.mtv h2{margin:0 0 8px;font-size:22px}
+.mtv p{margin:4px 0;color:var(--sub);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-width:420px}
 .mtb{background:var(--wb);border:1px solid var(--wbd);color:var(--wt);border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:14px;line-height:1.6;flex:none;white-space:pre-wrap;word-break:break-word}
 @property --rh{syntax:"<number>";inherits:true;initial-value:0}
 @keyframes rbh{to{--rh:360}}
@@ -238,12 +248,19 @@ body.rm.rb .app::before{display:none}
 body.rm.rb{animation:none!important}
 body.rm.rb::before,body.rm.rb::after{display:none}
 body.rm.rb #disp{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit;filter:none}
+@keyframes shk{0%,100%{transform:translate(0,0)}12%{transform:translate(-6px,2px)}28%{transform:translate(5px,-3px)}44%{transform:translate(-4px,3px)}60%{transform:translate(3px,-2px)}78%{transform:translate(-1px,1px)}}
+.app.shk{animation:shk .5s ease-in-out}
+html{background:var(--bg);color-scheme:light}
+html[data-theme=dark]{color-scheme:dark}
+html.shk,html.shk body{overflow:hidden}
+html.invt,html.invt *{transition:background-color .3s,color .3s,border-color .3s}
 .cfc{position:fixed;left:0;top:0;pointer-events:none;z-index:30}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;z-index:40;max-width:90%;text-align:center}
 .fxs{font:inherit;font-size:12px;padding:2px 4px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);max-width:40%}
 </style>
 </head>
 <body>
+<div class="mtv" id="mtv" hidden role="alert"><button class="lb mta" id="mta">管理者ですか？</button><div class="nog" aria-hidden="true"></div><h2>メンテナンス中です</h2><p>ご迷惑をお掛けして申し訳ございません。</p><p id="mtvm"></p></div>
 <div class="app">
  <div class="mtb" id="mtb" hidden></div>
  <div class="tb" id="tb" hidden><span>📢</span><span id="tbt"></span><button class="tbx" id="tbc" aria-label="閉じる">✕</button></div>
@@ -373,6 +390,17 @@ body.rm.rb #disp{background:none;-webkit-background-clip:border-box;background-c
  <h2>メンテナンス（管理者）</h2><p id="mtc"></p>
  <textarea class="inp" id="mtm" rows="2" maxlength="120" placeholder="利用者に表示する文章（例：10/30 2:00〜3:00 メンテナンスのため）" style="resize:vertical"></textarea>
  <p id="mte" style="margin:4px 0"></p>
+ <div id="mtt" hidden><p style="margin:12px 0 4px;font-weight:700">行事の確認<small style="font-weight:400;color:var(--sub)">（メンテナンス中のみ・日時を仮に変えて、ロゴとあいさつを確認）</small></p>
+  <div style="display:flex;gap:6px;margin:4px 0"><select id="mtev" class="inp" style="margin:0;flex:1"></select></div>
+  <div style="display:flex;gap:6px;margin:4px 0"><input class="inp" id="mtd" type="datetime-local" style="margin:0;flex:1"><button class="big sec" id="mtds" style="width:auto;margin:0;padding:0 14px">表示</button><button class="big sec" id="mtdr" style="width:auto;margin:0;padding:0 14px">戻す</button></div>
+  <p id="mtde" class="hint" style="text-align:left;margin:4px 0"></p>
+  <p style="margin:12px 0 4px;font-weight:700">テストモード<small style="font-weight:400;color:var(--sub)">（メンテナンス中のみ・記録とランキングはありません）</small></p>
+  <div style="display:flex;gap:6px;margin:4px 0"><select id="mtl" class="inp" style="margin:0;width:auto;flex:none"><option value="all">すべて</option><option value="easy">簡単</option><option value="normal">普通</option><option value="hard">難しい</option></select><input class="inp" id="mtq" placeholder="言葉・読みで絞り込み" style="margin:0"></div>
+  <div id="mtlist"></div>
+  <p class="hint" id="mtlh" style="text-align:left;margin:4px 0">言葉を押すと、下の入力欄に追加されます（効果つきの言葉には 🌈🎉📳❄️🌗 の印）</p>
+  <textarea class="inp" id="mtw" rows="4" maxlength="2000" placeholder="1行に1語。形式：表示|読み|効果（効果は rainbow / confetti / shake / snow / invert。なしでも可）&#10;例：ドパガキ|どぱがき|rainbow" style="resize:vertical"></textarea>
+  <p id="mtwe" style="margin:4px 0"></p>
+  <button class="big" id="mtg">この言葉でテストを開始する</button></div>
  <button class="big" id="mty">メンテナンスを開始する</button>
  <button class="big sec" id="mtn">メンテナンスを終了する</button>
  <button class="big sec" id="mtx">閉じる</button>
@@ -392,7 +420,7 @@ body.rm.rb #disp{background:none;-webkit-background-clip:border-box;background-c
  <h2>言葉の管理（管理者）</h2>
  <div class="seg" id="wml" style="margin:8px 0"><button data-lv="easy">簡単</button><button data-lv="normal">普通</button><button data-lv="hard">難しい</button></div>
  <div class="row2"><input class="inp" id="wd" placeholder="表示（例：新幹線）" maxlength="30"><input class="inp" id="wr" placeholder="読み・ひらがな（例：しんかんせん）" maxlength="60"></div>
- <select class="inp" id="wfx" style="margin:6px 0 0"><option value="">特殊効果：なし</option><option value="rainbow">🌈 打っている間、画面が虹色に光る</option><option value="confetti">🎉 打ち終えると、紙吹雪が舞う</option></select>
+ <select class="inp" id="wfx" style="margin:6px 0 0"><option value="">特殊効果：なし</option><option value="rainbow">🌈 打っている間、画面が虹色に光る</option><option value="confetti">🎉 打ち終えると、紙吹雪が舞う</option><option value="shake">📳 打ち終えると、画面が揺れる</option><option value="snow">❄️ 打ち終えると、雪が降る</option><option value="invert">🌗 打ち終えると、数秒間 色が反転する</option></select>
  <button class="big" id="wa" style="margin-top:0">追加</button>
  <details><summary>まとめて登録</summary><textarea class="inp" id="wb" rows="6" placeholder="1行に「表示|読み」。[簡単][普通][難しい]の行で追加先を切り替えられます" style="resize:vertical"></textarea><button class="big sec" id="wbb" style="margin-top:0">まとめて登録</button></details>
  <details><summary>書き出し（バックアップ）</summary><textarea class="inp" id="wx" rows="6" readonly style="resize:vertical"></textarea><button class="big sec" id="wxc" style="margin-top:0">コピー</button></details>
@@ -471,6 +499,7 @@ body.rm.rb #disp{background:none;-webkit-background-clip:border-box;background-c
    <div class="it"><div>色調補正<small>見分けやすい配色に切り替えます</small></div><select id="s_cv"><option value="">標準</option><option value="p">赤緑（赤色弱・P型/1型）</option><option value="d">赤緑（緑色弱・D型/2型）</option><option value="t">青黄（第3色覚・T型/3型）</option></select></div>
    <div class="it"><div>振り仮名<small>漢字の上に読みを表示</small></div><input type="checkbox" class="sw" id="s_furi"></div>
    <div class="it"><div>視差効果を減らす<small>動きや揺れの演出を減らします</small></div><input type="checkbox" class="sw" id="s_rm"></div>
+   <div class="it"><div>特殊アニメーション<small>紙吹雪・虹色の演出（オフにすると表示しません）</small></div><input type="checkbox" class="sw" id="s_fx"></div>
   </section>
   <section class="sg"><h3>入力と表示</h3>
    <div class="it"><div>ローマ字表示<small>打つ文字を表示</small></div><input type="checkbox" class="sw" id="s_guide"></div>
@@ -581,22 +610,22 @@ function tokenize(k){
 /* ===== 問題 (表示|読み) ===== */
 var W={easy:["朝日|あさひ", "夜空|よぞら", "海辺|うみべ", "雨音|あまおと", "花束|はなたば"],normal:["夏休み|なつやすみ", "青春時代|せいしゅんじだい", "初日の出|はつひので", "桜吹雪|さくらふぶき", "星降る夜|ほしふるよる"],hard:["起承転結|きしょうてんけつ", "花鳥風月|かちょうふうげつ", "天真爛漫|てんしんらんまん", "質実剛健|しつじつごうけん", "晴耕雨読|せいこううどく"]},WLOADED=false;/* 通常の出題はFirestoreから読み込む。読み込めないときだけ、この予備を使う */
 var $=function(i){return document.getElementById(i)};
-var S={theme:"auto",mode:"normal",bsc:{},na:"",bd:"",cv:"",kl:"jis",ns:"",rm:null,ss:0,name:"",ohk:false,rs:"hepburn",kb:true,fg:true,furi:true,guide:true,snd:true,vol:0.6,t:60,best:{},lv:"normal"};
+var S={theme:"auto",mode:"normal",bsc:{},na:"",bd:"",cv:"",kl:"jis",ns:"",rm:null,fx:true,ss:0,name:"",ohk:false,rs:"hepburn",kb:true,fg:true,furi:true,guide:true,snd:true,vol:0.6,t:60,best:{},lv:"normal"};
 try{var sv=JSON.parse(localStorage.getItem("aotoka_typing")||"{}");for(var q in sv)S[q]=sv[q]}catch(e){}
 if(S.rm===null){try{S.rm=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){S.rm=false}}
 function save(){try{localStorage.setItem("aotoka_typing",JSON.stringify(S))}catch(e){}}
 function applyS(){
- document.body.classList.toggle("nofuri",!S.furi);if(S.rm)document.body.classList.remove("rb");if(running)setTimeout(fitAll,0);
+ document.body.classList.toggle("nofuri",!S.furi);if(S.rm||S.fx===false){document.body.classList.remove("rb");invOff()}if(running)setTimeout(fitAll,0);
  document.body.classList.toggle("noguide",!S.guide);
  document.body.classList.toggle("nokb",!S.kb);document.body.classList.toggle("nofg",!S.fg);
  soundOn=S.snd;vol=S.vol;
  var dk=S.theme==="dark";
  if(S.theme==="auto"){try{dk=matchMedia("(prefers-color-scheme: dark)").matches}catch(e){}}
- document.documentElement.setAttribute("data-theme",dk?"dark":"light");
+ INV0=null;clearTimeout(invT);document.body.classList.remove("inv");document.documentElement.setAttribute("data-theme",dk?"dark":"light");
  var cv=S.cv||"";if(cv)document.documentElement.setAttribute("data-cvd",cv);else document.documentElement.removeAttribute("data-cvd");
  $("s_cv").value=cv;
  $("s_theme").value=S.theme;
- $("s_furi").checked=S.furi;$("s_guide").checked=S.guide;$("s_kl").value=S.kl;if(klBuilt!==S.kl){klBuilt=S.kl;buildKB()}$("s_rm").checked=!!S.rm;document.body.classList.toggle("rm",!!S.rm);$("s_ss").value=S.ss;$("s_oh").checked=S.ohk;$("s_rs").value=S.rs;$("s_kb").checked=S.kb;$("s_fg").checked=S.fg;$("s_snd").checked=S.snd;$("s_vol").value=S.vol;S.t=S.mode==="daily"?90:S.mode==="practice"?0:LT[S.lv];$("rule").textContent="連続30回で+1秒、60・90回で+2.5秒、120回で+3.5秒（一巡後は最初から／ミスでリセット）";
+ $("s_furi").checked=S.furi;$("s_guide").checked=S.guide;$("s_kl").value=S.kl;if(klBuilt!==S.kl){klBuilt=S.kl;buildKB()}$("s_rm").checked=!!S.rm;$("s_fx").checked=S.fx!==false;document.body.classList.toggle("rm",!!S.rm);$("s_ss").value=S.ss;$("s_oh").checked=S.ohk;$("s_rs").value=S.rs;$("s_kb").checked=S.kb;$("s_fg").checked=S.fg;$("s_snd").checked=S.snd;$("s_vol").value=S.vol;S.t=S.mode==="daily"?90:S.mode==="practice"?0:LT[S.lv];$("rule").textContent="連続30回で+1秒、60・90回で+2.5秒、120回で+3.5秒（一巡後は最初から／ミスでリセット）";
  [].forEach.call($("lvs").children,function(b){b.classList.toggle("on",b.dataset.lv===S.lv)});
  [].forEach.call($("mds").children,function(b){b.classList.toggle("on",b.dataset.m===S.mode)});
  $("lvs").hidden=S.mode==="daily";$("ohl").hidden=S.mode!=="normal";
@@ -614,15 +643,29 @@ var TK=[],bnT=0;
 var BS=[[30,1],[60,2.5],[90,2.5],[120,3.5]],CYC=BS[BS.length-1][0];/* [連続回数,追加秒] 120回で一巡してリセット */
 function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function ruby(d,k){return /[\u4e00-\u9fff]/.test(d)?"<ruby>"+esc(d)+"<rt>"+esc(k)+"</rt></ruby>":esc(d)}
-function pw(x){var p=x.split("|"),f=p[2]||"";return{k:p[1],d:p[0],x:["rainbow","confetti"].indexOf(f)>=0?f:""}}
+var FXD=[["rainbow","🌈 虹色"],["confetti","🎉 紙吹雪"],["shake","📳 画面が揺れる"],["snow","❄️ 雪"],["invert","🌗 色反転"]],FXL=FXD.map(function(f){return f[0]}),FXI={rainbow:"🌈",confetti:"🎉",shake:"📳",snow:"❄️",invert:"🌗"};
+function fxOpts(c){return '<option value="">効果なし</option>'+FXD.map(function(f){return '<option value="'+f[0]+'"'+(c===f[0]?" selected":"")+'>'+f[1]+'</option>'}).join("")}
+function pw(x){var p=x.split("|"),f=p[2]||"";return{k:p[1],d:p[0],x:FXL.indexOf(f)>=0?f:""}}
 function h32(t){var h=2166136261;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function dayIdOf(off){var j=new Date(Date.now()+32400000-864e5*(off||0));return j.getUTCFullYear()+("0"+(j.getUTCMonth()+1)).slice(-2)+("0"+j.getUTCDate()).slice(-2)}
+var TEST=null,invT=0,INV0=null;
+function invOff(){if(INV0)document.documentElement.setAttribute("data-theme",INV0);INV0=null;clearTimeout(invT);document.body.classList.remove("inv");setTimeout(function(){document.documentElement.classList.remove("invt")},400)}
+function fxDone(x){
+ if(!x||S.rm||S.fx===false)return;
+ if(x==="confetti")confetti();
+ else if(x==="rainbow")document.body.classList.add("rb");
+ else if(x==="snow")confetti({mode:"snow"});
+ else if(x==="shake"){var a=document.querySelector(".app"),h=document.documentElement;a.classList.remove("shk");void a.offsetWidth;a.classList.add("shk");h.classList.add("shk");setTimeout(function(){a.classList.remove("shk");h.classList.remove("shk")},600)}
+ else if(x==="invert"){var hh=document.documentElement;if(!INV0){INV0=hh.getAttribute("data-theme")||"light";hh.classList.add("invt");hh.setAttribute("data-theme",INV0==="dark"?"light":"dark");document.body.classList.add("inv")}clearTimeout(invT);invT=setTimeout(invOff,3000)}
+}
+function testEnd(){if(TEST){S.mode=TEST.pm;TEST=null;applyS()}}
 function dailyList(){
  var d=dayIdOf(0),seen={},a=[];
  ["easy","normal","hard"].forEach(function(l){W[l].forEach(function(e){var w=pw(e);if(w.k&&!seen[w.d]){seen[w.d]=1;w.h=h32(d+"|"+w.d);a.push(w)}})});
  a.sort(function(x,y){return x.h-y.h||(x.d<y.d?-1:1)});return a;
 }
 function nextWord(){
+ if(TEST){var tw=TEST.w[TEST.i%TEST.w.length];TEST.i++;lastK=tw.k;return tw}
  if(S.mode==="daily"){var dw=dayWords[dIdx%dayWords.length];dIdx++;lastK=dw.k;return dw}
  if(!queue.length){
   queue=W[S.lv].map(pw).filter(function(w){return w.k});
@@ -631,7 +674,7 @@ function nextWord(){
  }
  var w=queue.pop();lastK=w.k;return w;
 }
-function start(){document.body.classList.remove("rb");
+function start(){document.body.classList.remove("rb");invOff();
  if(S.mode==="daily"){
   if(!WLOADED){$("mdh").hidden=false;$("mdh").textContent="言葉を読み込めていないため、日替わりは今は遊べません。通信状況を確認して、少し待ってからお試しください。";loadWords();return}
   dayWords=dailyList();playDay=dayIdOf(0);
@@ -689,7 +732,7 @@ function draw(){
 function nextBS(){var c=combo%CYC,n=BS.filter(function(x){return x[0]>c})[0]||BS[0];return [n[0]-c,n[1]]}
 function addHit(){
  hit++;combo++;if(combo>maxCombo)maxCombo=combo;
- if(combo%100===0){confetti();toast("🔥 "+combo+"連続！")}
+ if(combo%100===0){confetti();toast("🔥 "+combo+"連続！")}else if(combo===50)toast("✨ 50連続！")
  var cy=combo%CYC||CYC;
  if(S.mode!=="practice")BS.forEach(function(x){if(cy===x[0]){bonus+=x[1];var e=$("bn");e.textContent="+"+x[1]+"秒";e.classList.remove("go");void e.offsetWidth;e.classList.add("go");clearTimeout(bnT);bnT=setTimeout(function(){e.classList.remove("go")},1000)}});
  var b=Math.floor((Date.now()-t0)/10000);while(buckets.length<=b)buckets.push(0);buckets[b]++;
@@ -698,6 +741,7 @@ function closeMasks(){[].forEach.call(document.querySelectorAll(".mask.on"),func
 function key(e){
  if(!$("rd").hidden){if(e.key==="Escape")closeRD();return}
  if(document.querySelector(".mask.on")){if(e.key==="Escape")closeMasks();return}
+ if(MAINT.on&&!isAdmin())return;
  if(!running)return;
  if(e.key==="Escape"){finish(!(S.mode==="practice"&&hit+miss>0));return}
  if(e.ctrlKey||e.metaKey||e.altKey||e.key.length!==1)return;
@@ -712,13 +756,13 @@ function key(e){
  if(t.o.indexOf(nb)>=0&&!t.o.some(function(x){return x.length>nb.length&&x.indexOf(nb)===0&&nb!=="n"})){
   if(nb==="n"&&t.o.indexOf("nn")>=0)swallow=true;
   t.done=nb;ti++;bf="";
-  if(ti>=toks.length){if(curW.x==="confetti")confetti();if(curW.x==="rainbow"&&!S.rm)document.body.classList.add("rb");wi++;load();return}
+  if(ti>=toks.length){fxDone(curW.x);wi++;load();return}
  }
  draw();
 }
 function finish(abort){
- running=false;clearInterval(timer);document.body.classList.remove("playing","practice","rb");
- if(abort){show("home");return}
+ running=false;clearInterval(timer);document.body.classList.remove("playing","practice","rb");invOff();
+ if(abort){testEnd();show("home");return}
  if(!failed)play("done");
  var el0=(Date.now()-t0)/1000,tot=Math.max(1,S.t>0?Math.min(el0,S.t+bonus):el0);
  var kpm=Math.round(hit/(tot/60)),acc=hit+miss?Math.round(hit/(hit+miss)*100):0;
@@ -728,6 +772,7 @@ function finish(abort){
  var pr=S.mode==="practice",dl=S.mode==="daily",id=dl?"daily_"+playDay:S.lv+"_"+S.t+(ohOn()?"_ohk":""),sc2=scoreOf(wi,acc,kpm),pb=(S.bsc&&S.bsc[id])||((S.best[id]||0)*1000000),nb=!pr&&sc2>pb,b=nb?wi:(S.best[id]||0);
  if(nb){S.best[id]=wi;(S.bsc=S.bsc||{})[id]=sc2;save()}
  $("best").textContent=pr?"ゆっくり練習（記録・ランキングはありません）":(nb?"🎉 新記録！ "+wi+" 語":"最高記録 "+b+" 語")+"（"+(dl?"日替わり":LVN[S.lv]+"・"+S.t+"秒")+(bonus?"＋"+bonus+"秒":"")+(ohOn()?"・一発勝負":"")+"）";
+ if(TEST)$("best").textContent="テストモード（記録・ランキングはありません）";
  $("r4").textContent=hit+miss;$("r5").textContent=miss;$("r6").textContent=maxCombo;
  var mx=Math.max.apply(null,buckets.concat([1]));
  $("bars").innerHTML=buckets.map(function(v,i){return '<div class="bc"><b>'+v+'</b><i style="height:'+Math.round(v/mx*80)+'px"></i><span>'+(i+1)*10+'</span></div>'}).join("");
@@ -740,8 +785,9 @@ function finish(abort){
  $("rmode").textContent=ohOn()?(failed?"一発勝負：失敗（ミスで終了）":"一発勝負：成功！"):"";
  $("rmode").style.color=failed?"var(--ng)":"var(--ok)";
  if(S.mode!=="practice"&&!failed&&acc===100&&wi>=10&&!$("rmode").textContent){$("rmode").textContent="✨ ノーミス達成！";$("rmode").style.color="var(--ok)"}
- if($("rk").textContent==="S")setTimeout(confetti,350);
- show("res");
+ if(!TEST&&S.mode!=="practice"&&!failed&&!$("rmode").textContent){if(wi===77){$("rmode").textContent="🍀 ラッキーセブン！（77語）";$("rmode").style.color="var(--ok)";setTimeout(confetti,350)}else if(wi===100){$("rmode").textContent="💯 100語ちょうど！";$("rmode").style.color="var(--ok)";setTimeout(confetti,350)}}
+ if($("rk").textContent==="S"&&!TEST)setTimeout(confetti,350);
+ $("again").hidden=!!TEST;testEnd();show("res");
 }
 /* ===== Firebase ランキング (REST API / SDK不要) =====
    Firebaseコンソールの「プロジェクトの設定」から値をコピーして入れる。空欄ならランキング機能は非表示 */
@@ -751,7 +797,7 @@ var FB={apiKey:"AIzaSyCGEq_Bd_H1_Q3AIx4qy_AE3OiS0xC1UpM",projectId:"ao-typing"};
 var MASKC="(?:[^\\p{L}\\p{N}]|[〇○◯●◎□■×✕✖xX])";
 function fold(t){return t.normalize("NFKC").toLowerCase().replace(/[ァ-ヶ]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-96)}).replace(/\s/g,"")}
 /* ===== 利用規約・プライバシーポリシー・クレジットに差し込む情報（ここを書き換える） ===== */
-var INFO={owner:"あおとか",coop:"Kairu（Discord：@kairusovietdayo00od）",kb1:"EPOMAKER x AULA F75",kb2:"Logicool G PRO GX REDリニア",mic1:"JBL Quantum Stream",mic2:"iPhone 17",date:"2026年10月27日"};
+var INFO={owner:"あおとか",coop:"Kairu（Discord：@kairusovietdayo00od）",kb1:"EPOMAKER x AULA F75",kb2:"Logicool G PRO GX REDリニア",mic1:"JBL Quantum Stream",mic2:"iPhone 17",date:"2026年11月2日"};
 function openDoc(k){
  var t=k==="priv"?"privacy":k==="cred"?"credits":k;
  ["terms","privacy","credits"].forEach(function(x){$("rd_"+x).hidden=x!==t});
@@ -769,6 +815,7 @@ function markSrc(b){
 }
 /* ===== お知らせ（新しいものを先頭に追加していく。d=日付 t=見出し l=内容） ===== */
 var NEWS=[
+ {d:"2026-11-02",t:"特殊アニメーション設定・メンテナンス表示",l:["設定に「特殊アニメーション」を追加（紙吹雪・虹色の演出をオフにできます。標準はオン）","メンテナンス中は、画面全体に「メンテナンス中です」の案内を表示するように変更","メンテナンス中に管理者が使える「テストモード」を追加（指定した言葉だけで動作確認ができます）","言葉に付けられる特殊効果を追加（画面が揺れる・雪・色反転）","行事の日の表示を追加し（祝日、節分・猫の日・ホワイトデー・母の日・父の日 など）、隠し要素もいくつか追加（探してみてください）","メンテナンス中の管理者向けに、日時を仮に変えて行事の表示を確認できる機能を追加"]},
  {d:"2026-10-28",t:"隠し要素",l:["いくつか隠し要素を追加（探してみてください）"]},
  {d:"2026-10-27",t:"ランキングの整理・メンテナンス表示",l:["ランキングを、今週・先週（日替わりは今日・昨日）だけに整理","メンテナンス中は、画面の上に案内を出し、ランキングへの登録を一時停止できるように"]},
  {d:"2026-10-24",t:"日替わり・ゆっくり練習・報告機能を追加",l:["日替わりチャレンジを追加（毎日0時に問題が変わり、専用ランキングあり）","ゆっくり練習モードを追加（時間制限なし・ランキングなし）","ランキングで先週（昨日）の結果も見られるように","ランキングに「報告」ボタンを追加","出題する言葉は、サーバーから読み込むように変更（運営がアプリ内から追加できます）"]},
@@ -780,7 +827,10 @@ var NEWS=[
 ];
 /* ===== メンテナンス表示（Firestore: config/status）。ONの間は、ランキングへの登録を一時停止して、画面の上に案内を出す ===== */
 var MAINT={on:false,msg:""};
-function renderMaint(){var e=$("mtb");e.hidden=!MAINT.on;if(MAINT.on)e.textContent="🔧 メンテナンス中："+(MAINT.msg||"ランキングへの登録を一時停止しています")}
+function renderMaint(){var e=$("mtb"),blk=MAINT.on&&!isAdmin();e.hidden=!(MAINT.on&&isAdmin());if(MAINT.on)e.textContent="🔧 メンテナンス中（管理者のみ操作できます）："+(MAINT.msg||"一般の利用者には、メンテナンス中の画面を表示しています");
+ greet();$("mtv").hidden=!blk;$("mtvm").textContent=MAINT.msg||"";$("mtvm").hidden=!MAINT.msg;
+ var ap=document.querySelector(".app");if(blk)ap.setAttribute("inert","");else ap.removeAttribute("inert")}
+setInterval(function(){if(MAINT.on&&!running&&document.visibilityState==="visible")loadStatus()},60000);
 function loadStatus(){
  if(!fbOn())return Promise.resolve();
  return fetch(fsBase()+"/config/status?key="+FB.apiKey).then(function(r){if(r.status===404)return {};if(!r.ok)throw new Error(r.status);return r.json().then(function(j){return j.fields||{}})}).then(function(f){MAINT.on=!!(f.maint&&f.maint.booleanValue);MAINT.msg=(f.msg&&f.msg.stringValue)||"";renderMaint()}).catch(function(e){console.error(e)});
@@ -956,7 +1006,7 @@ function renderWM(msg){
  if(msg!==undefined){$("wme").style.color="var(--ok)";$("wme").textContent=msg}
  [].forEach.call($("wml").children,function(b){b.classList.toggle("on",b.dataset.lv===wmLv)});
  var l=WSRV[wmLv];
- $("wl").innerHTML='<p class="hint" style="text-align:left;margin:0 0 4px">'+LVN[wmLv]+'：'+l.length+'語'+(l.length?'':'（まだありません。追加すると、全員の出題に反映されます）')+'</p>'+l.map(function(e,i){var q=pw(e);return '<div class="wi"><span>'+esc(q.d)+'<small>'+esc(q.k)+'</small></span><select class="fxs" data-wf="'+i+'"><option value="">効果なし</option><option value="rainbow"'+(q.x==="rainbow"?' selected':'')+'>🌈 虹色</option><option value="confetti"'+(q.x==="confetti"?' selected':'')+'>🎉 紙吹雪</option></select><button class="lb" data-wd="'+i+'">削除</button></div>'}).join("");
+ $("wl").innerHTML='<p class="hint" style="text-align:left;margin:0 0 4px">'+LVN[wmLv]+'：'+l.length+'語'+(l.length?'':'（まだありません。追加すると、全員の出題に反映されます）')+'</p>'+l.map(function(e,i){var q=pw(e);return '<div class="wi"><span>'+esc(q.d)+'<small>'+esc(q.k)+'</small></span><select class="fxs" data-wf="'+i+'">'+fxOpts(q.x)+'</select><button class="lb" data-wd="'+i+'">削除</button></div>'}).join("");
 }
 /* --- NGワードの管理 --- */
 var gflat=[];
@@ -998,16 +1048,18 @@ function dropReports(g){return Promise.all(g.rids.map(function(rid){return annRe
 /* ===== 小ネタ ===== */
 /* 紙吹雪：canvasで描く物理シミュレーション（重力・空気抵抗・ひらひら・回転・色々な形）。mode:"cannon"=左右下から発射、"rain"=上から降る */
 var cfC=null,cfP=[],cfRaf=0,CFCOL=["#ff4d6d","#ffb703","#ffd60a","#80ed99","#38bdf8","#6366f1","#c084fc","#ff8fab","#ffffff"];
-function cfAdd(x,y,ang,spd,n,spread){
+var SNOWCOL=["#ffffff","#e0f2fe","#bae6fd","#dbeafe"];
+function cfAdd(x,y,ang,spd,n,spread,col){
  for(var i=0;i<n;i++){var a=ang+(Math.random()-.5)*spread,v=spd*(0.5+Math.random()*0.75);
-  cfP.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:5+Math.random()*6,h:8+Math.random()*9,r:Math.random()*6.28,vr:(Math.random()-.5)*0.35,ph:Math.random()*6.28,fl:0.05+Math.random()*0.12,c:CFCOL[Math.floor(Math.random()*CFCOL.length)],t:Math.floor(Math.random()*4),life:0,max:150+Math.random()*100})}
+  cfP.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:5+Math.random()*6,h:8+Math.random()*9,r:Math.random()*6.28,vr:(Math.random()-.5)*0.35,ph:Math.random()*6.28,fl:0.05+Math.random()*0.12,c:CFCOL[Math.floor(Math.random()*CFCOL.length)],t:Math.floor(Math.random()*4),life:0,max:150+Math.random()*100});if(col){var q=cfP[cfP.length-1];q.c=col[Math.floor(Math.random()*col.length)];q.t=1;q.g=0.05;q.w=q.h=3+Math.random()*4;q.max=240+Math.random()*120}}
 }
 function confetti(o){
- if(S.rm)return;
+ if(S.rm||S.fx===false)return;
  var cv=cfC;if(!cv){cv=cfC=document.createElement("canvas");cv.className="cfc";document.body.appendChild(cv)}
  var dpr=Math.min(window.devicePixelRatio||1,2),W=innerWidth,H=innerHeight;
  if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+"px";cv.style.height=H+"px"}
- if(o&&o.mode==="rain"){for(var i=0;i<80;i++)cfAdd(Math.random()*W,-20-Math.random()*H*0.5,Math.PI/2,1.5+Math.random()*2,1,0.6)}
+ if(o&&o.mode==="snow"){for(var i=0;i<120;i++)cfAdd(Math.random()*W,-20-Math.random()*H*0.7,Math.PI/2,0.6+Math.random()*1.2,1,0.4,SNOWCOL)}
+ else if(o&&o.mode==="rain"){for(var i=0;i<80;i++)cfAdd(Math.random()*W,-20-Math.random()*H*0.5,Math.PI/2,1.5+Math.random()*2,1,0.6)}
  else{var k=H/700*7+9;cfAdd(0,H,-Math.PI/3.1,k,48,0.8);cfAdd(W,H,-Math.PI+Math.PI/3.1,k,48,0.8);cfAdd(W/2,H*0.92,-Math.PI/2,k*0.9,34,1.1)}
  if(!cfRaf)cfRaf=requestAnimationFrame(cfStep);
 }
@@ -1016,7 +1068,7 @@ function cfStep(){
  g.setTransform(cv.width/W,0,0,cv.height/H,0,0);g.clearRect(0,0,W,H);
  for(var i=cfP.length-1;i>=0;i--){
   var p=cfP[i];p.life++;
-  p.vx*=0.985;p.vy=p.vy*0.986+0.3;
+  p.vx*=0.985;p.vy=p.vy*0.986+(p.g||0.3);
   p.x+=p.vx+Math.sin(p.ph+p.life*0.05)*0.7;p.y+=p.vy;p.r+=p.vr;p.ph+=0.02;
   var al=p.life>p.max-40?(p.max-p.life)/40:1;
   if(p.y>H+30||al<=0){cfP.splice(i,1);continue}
@@ -1031,11 +1083,18 @@ function cfStep(){
 }
 var toastT=0;
 function toast(t){var e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},2600)}
+var TESTD=null,LG0=null;
+function nowD(){return TESTD&&MAINT.on&&isAdmin()?new Date(TESTD.getTime()):new Date()}
+/* 行事：FIX＝毎年同じ日（月日の数字→[印,一言]）、VAR＝第n週の曜日（[月,曜日(0=日),第n,印,一言,名前]） */
+var FIX={101:["🎍","あけましておめでとうございます。"],102:["🎍","あけましておめでとうございます。"],103:["🎍","あけましておめでとうございます。"],203:["👹","節分です。鬼は外、福は内！"],211:["🗻","建国記念の日です。"],214:["🍫","バレンタインですね。"],222:["🐈","猫の日です。にゃーにゃーにゃー。"],223:["🎌","天皇誕生日です。"],303:["🎎","ひな祭りです。"],314:["🤍","ホワイトデーです。"],401:["🃏","エイプリルフールです。今日のひみつは、何もありません。たぶん。"],429:["🌿","昭和の日です。ゴールデンウィークの始まりですね。"],503:["📜","憲法記念日です。"],504:["🌳","みどりの日です。"],505:["🎏","こどもの日です。"],610:["⏰","時の記念日です。時間を大切に！"],707:["🎋","七夕です。願いごとは決まりましたか？"],811:["⛰️","山の日です。"],1031:["🎃","ハッピーハロウィン！"],1103:["📚","文化の日です。"],1123:["🙏","勤労感謝の日です。おつかれさまです。"],1222:["🍊","冬至です。ゆず湯でゆっくり。"],1224:["🎄","メリークリスマス！"],1225:["🎄","メリークリスマス！"],1231:["🔔","良いお年を。"]},
+ VAR=[[1,1,2,"👘","成人の日です。","成人の日"],[7,1,3,"🌊","海の日です。","海の日"],[10,1,2,"🏃","スポーツの日です。指の運動も忘れずに！","スポーツの日"],[5,0,2,"💐","母の日です。","母の日"],[6,0,3,"👔","父の日です。","父の日"],[9,1,3,"🎂","敬老の日です。","敬老の日"]];
+function nthDay(y,m,dow,n){var f=new Date(y,m-1,1).getDay();return 1+((dow-f+7)%7)+(n-1)*7}
+function evOf(d){var md=(d.getMonth()+1)*100+d.getDate();if(FIX[md])return FIX[md];for(var i=0;i<VAR.length;i++){var v=VAR[i];if(v[0]===d.getMonth()+1&&nthDay(d.getFullYear(),v[0],v[1],v[2])===d.getDate())return[v[3],v[4]]}return null}
 function greet(){
- var d=new Date(),h=d.getHours(),md=(d.getMonth()+1)*100+d.getDate(),g=h<5?"🌙 夜ふかしさんですね。無理せずに！　":h<11?"☀ おはようございます。　":h>=18?"🌙 こんばんは。　":"";
- $("gr").textContent=g+"時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう";
- var lg=document.querySelector(".bar .logo");
- if(md===1031)lg.textContent="🎃";else if(md===1224||md===1225)lg.textContent="🎄";else if(md>=101&&md<=103)lg.textContent="🎍";
+ var d=nowD(),h=d.getHours(),g=h<5?"🌙 夜ふかしさんですね。無理せずに！　":h<11?"☀ おはようございます。　":h>=18?"🌙 こんばんは。　":"";
+ var lg=document.querySelector(".bar .logo");if(!LG0)LG0=lg.textContent;
+ var ev=evOf(d);lg.textContent=ev?ev[0]:LG0;
+ $("gr").textContent=(ev?ev[0]+" "+ev[1]+"　":g)+"時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう";
 }
 var lgN=0,lgT=0,kSeq=[],KON=["arrowup","arrowup","arrowdown","arrowdown","arrowleft","arrowright","arrowleft","arrowright","b","a"];
 /* ===== 運営からのお知らせ（Firestore: announcements。読むのは誰でも、書くのは管理者のみ） ===== */
@@ -1129,6 +1188,7 @@ $("s_fg").onchange=function(){S.fg=this.checked;save();applyS()};
 $("s_rs").onchange=function(){S.rs=this.value;save();applyS();if(running)draw()};
 $("s_oh").onchange=function(){S.ohk=this.checked;save()};
 $("s_rm").onchange=function(){S.rm=this.checked;save();applyS()};
+$("s_fx").onchange=function(){S.fx=this.checked;save();applyS()};
 $("s_kl").onchange=function(){S.kl=this.value;save();applyS()};
 $("s_cv").onchange=function(){S.cv=this.value;save();applyS()};
 $("s_theme").onchange=function(){S.theme=this.value;save();applyS()};
@@ -1148,7 +1208,7 @@ $("nc").onclick=function(){$("nm").classList.remove("on")};
 $("tbc").onclick=function(){var a=annC.filter(function(x){return x.banner})[0];if(a){S.bd=a.id;save()}$("tb").hidden=true};
 $("adn").onclick=openNews;
 $("adr").onclick=function(){openSB(S.lv,S.ohk)};
-$("ado").onclick=function(){adminOut();sbOff=0;adminUI();renderAnn();closeMasks()};
+$("ado").onclick=function(){adminOut();sbOff=0;adminUI();renderAnn();renderMaint();closeMasks()};
 $("naa").onclick=function(){
  var t=$("nat").value.trim(),m=$("naer");
  if(!t){m.style.color="var(--ng)";m.textContent="本文を入力してください";return}
@@ -1177,11 +1237,48 @@ $("rmy").onclick=function(){
  }).then(function(res){m.style.color="var(--ok)";m.textContent=res==="dup"?"すでに報告済みです":"報告しました。確認します。ありがとうございます";$("rmy").disabled=false;setTimeout(function(){$("rm").classList.remove("on")},1300)}).catch(fail(m,$("rmy")));
 };
 /* 管理者：通報 */
-$("adm").onclick=function(){$("mt").classList.add("on");$("mte").textContent="";$("mtc").textContent="現在："+(MAINT.on?"メンテナンス中":"通常運転");$("mtm").value=MAINT.msg||"";loadStatus().then(function(){$("mtc").textContent="現在："+(MAINT.on?"メンテナンス中":"通常運転")})};
+function mtSync(){$("mtc").textContent="現在："+(MAINT.on?"メンテナンス中":"通常運転");$("mty").hidden=MAINT.on;$("mtt").hidden=!MAINT.on}
+$("adm").onclick=function(){$("mt").classList.add("on");$("mte").textContent="";$("mtwe").textContent="";$("mtm").value=MAINT.msg||"";mtSync();mtList();if(!$("mtev").options.length)mtEvInit();mtDShow();loadStatus().then(function(){mtSync();mtList();mtDShow()})};
+var MTL=[];
+function pad2(n){return(n<10?"0":"")+n}
+function mtDt(d){return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate())+"T"+pad2(d.getHours())+":"+pad2(d.getMinutes())}
+function mtEvInit(){var y=new Date().getFullYear(),a=[],seen={};
+ Object.keys(FIX).forEach(function(k){k=+k;a.push([Math.floor(k/100),k%100,FIX[k][0],FIX[k][1]])});
+ VAR.forEach(function(v){a.push([v[0],nthDay(y,v[0],v[1],v[2]),v[3],v[5]])});
+ a.sort(function(x,z){return x[0]-z[0]||x[1]-z[1]});
+ $("mtev").innerHTML='<option value="">行事を選ぶ（'+a.length+'件）</option>'+a.map(function(e){return '<option value="'+y+"-"+pad2(e[0])+"-"+pad2(e[1])+'">'+e[0]+"/"+e[1]+"　"+e[2]+" "+esc(e[3])+'</option>'}).join("")}
+function mtDShow(){var lg=document.querySelector(".bar .logo").textContent;$("mtde").textContent=(TESTD&&MAINT.on?"仮の日時："+TESTD.getFullYear()+"/"+(TESTD.getMonth()+1)+"/"+TESTD.getDate()+" "+pad2(TESTD.getHours())+":"+pad2(TESTD.getMinutes())+"　":"現在の日時　")+"ロゴ："+lg+"　あいさつ："+$("gr").textContent.replace("時間内に何語打てるか挑戦。難易度を選んで「開始」を押そう","（通常の文章）")}
+$("mtev").onchange=function(){if(this.value){var d=$("mtd").value;$("mtd").value=this.value+"T"+(d?d.split("T")[1]:"12:00");$("mtds").click()}};
+$("mtds").onclick=function(){var v=$("mtd").value;if(!v){$("mtde").textContent="日時を選ぶか、行事を選んでください";return}var d=new Date(v);if(isNaN(d.getTime())){$("mtde").textContent="日時が正しくありません";return}TESTD=d;greet();mtDShow()};
+$("mtdr").onclick=function(){TESTD=null;$("mtd").value="";$("mtev").value="";greet();mtDShow()};
+function mtList(){
+ var lv=$("mtl").value,q=$("mtq").value.trim().toLowerCase(),seen={},a=[];
+ ["easy","normal","hard"].forEach(function(l){if(lv!=="all"&&lv!==l)return;(W[l]||[]).forEach(function(e){var w=pw(e);if(!w.k||seen[w.d])return;seen[w.d]=1;if(q&&w.d.toLowerCase().indexOf(q)<0&&w.k.indexOf(q)<0)return;a.push(w)})});
+ var more=a.length>300;MTL=a.slice(0,300);
+ $("mtlist").innerHTML=MTL.length?MTL.map(function(w,i){return '<button type="button" class="wch" data-i="'+i+'">'+esc(w.d)+(w.x?" "+FXI[w.x]:"")+'</button>'}).join(""):'<span class="hint" style="margin:4px">該当する言葉がありません</span>';
+ $("mtlh").textContent="言葉を押すと、下の入力欄に追加されます（効果つきの言葉には 🌈🎉📳❄️🌗 の印）"+(more?"　※"+a.length+"語のうち300語まで表示。絞り込んでください":"")+(WLOADED?"":"　※サーバーの言葉を読み込めていないため、予備の言葉だけです");
+}
+$("mtl").onchange=mtList;$("mtq").oninput=mtList;
+$("mtlist").onclick=function(e){var b=e.target.closest(".wch");if(!b)return;var w=MTL[+b.dataset.i];if(!w)return;
+ var line=w.d+"|"+w.k+(w.x?"|"+w.x:""),t=$("mtw"),ls=t.value.split("\n").map(function(x){return x.trim()}).filter(Boolean);
+ if(ls.some(function(x){return x.split("|")[0]===w.d})){$("mtwe").style.color="var(--sub)";$("mtwe").textContent="「"+w.d+"」はすでに追加されています";return}
+ ls.push(line);t.value=ls.join("\n");$("mtwe").style.color="var(--sub)";$("mtwe").textContent=ls.length+"語を選択中";
+};
+$("mtg").onclick=function(){
+ var m=$("mtwe");m.style.color="var(--ng)";
+ if(!(MAINT.on&&isAdmin())){m.textContent="テストモードは、メンテナンス中に管理者がログインしているときだけ使えます";return}
+ var ws=[],bad=0;$("mtw").value.split("\n").forEach(function(l){l=l.trim();if(!l)return;var q=l.split("|"),d=(q[0]||"").trim(),r=(q[1]||"").trim(),fx=(q[2]||"").trim();
+  if(!d||d.length>30||!readOk(r)||(fx&&FXL.indexOf(fx)<0)){bad++;return}
+  ws.push({d:d,k:r,x:fx})});
+ if(bad){m.textContent="形式が正しくない行が"+bad+"行あります（「表示|読み|効果」、読みはひらがな）";return}
+ if(!ws.length){m.textContent="言葉を1語以上入力してください";return}
+ if(ws.length>50){m.textContent="言葉は50語までです";return}
+ m.textContent="";TEST={w:ws,pm:S.mode,i:0};S.mode="practice";closeMasks();applyS();start();
+};
 $("mtx").onclick=function(){$("mt").classList.remove("on")};
 function setMaint(on){
  var m=$("mte");m.style.color="var(--sub)";m.textContent="更新中…";
- annReq("PATCH","/config/status?updateMask.fieldPaths=maint&updateMask.fieldPaths=msg",{fields:{maint:{booleanValue:on},msg:{stringValue:$("mtm").value.trim()}}}).then(function(){return loadStatus()}).then(function(){m.style.color="var(--ok)";m.textContent=on?"メンテナンスを開始しました":"メンテナンスを終了しました";$("mtc").textContent="現在："+(MAINT.on?"メンテナンス中":"通常運転")}).catch(fail(m,null));
+ annReq("PATCH","/config/status?updateMask.fieldPaths=maint&updateMask.fieldPaths=msg",{fields:{maint:{booleanValue:on},msg:{stringValue:$("mtm").value.trim()}}}).then(function(){return loadStatus()}).then(function(){m.style.color="var(--ok)";m.textContent=on?"メンテナンスを開始しました":"メンテナンスを終了しました";mtSync()}).catch(fail(m,null));
 }
 $("mty").onclick=function(){setMaint(true)};
 $("mtn").onclick=function(){setMaint(false)};
@@ -1214,7 +1311,7 @@ $("wbb").onclick=function(){
   line=line.trim();if(!line)return;
   var h=line.match(/^\[(簡単|普通|難しい)\]$/);if(h){lv=LVJ[h[1]];return}
   var q=line.split("|");if(q.length<2||q.length>3){bad++;return}
-  var d=q[0].trim(),r=q[1].trim(),fx=(q[2]||"").trim();if(!d||d.length>30||!readOk(r)||(fx&&["rainbow","confetti"].indexOf(fx)<0)){bad++;return}
+  var d=q[0].trim(),r=q[1].trim(),fx=(q[2]||"").trim();if(!d||d.length>30||!readOk(r)||(fx&&FXL.indexOf(fx)<0)){bad++;return}
   if(seen[d]){dup++;return}seen[d]=1;out[lv].push(d+"|"+r+(fx?"|"+fx:""));
  });
  var n=out.easy.length+out.normal.length+out.hard.length;
@@ -1268,9 +1365,11 @@ $("gl").onclick=function(e){
 greet();
 document.querySelector(".bar .logo").onclick=function(){var n=Date.now();lgN=(n-lgT>1500)?1:lgN+1;lgT=n;if(lgN>=7){lgN=0;confetti();confetti({mode:"rain"});toast("🎉 見つけたね！ いつもありがとう")}};
 document.addEventListener("keydown",function(e){
+ if(MAINT.on&&!isAdmin())return;
  if(running||document.querySelector(".mask.on")||!$("rd").hidden)return;
  kSeq.push((e.key||"").toLowerCase());if(kSeq.length>KON.length)kSeq.shift();
- if(kSeq.join()===KON.join()){kSeq=[];confetti();confetti({mode:"rain"});toast("🎮 コマンド発動！");if(!S.rm){document.body.classList.add("rb");setTimeout(function(){if(!running)document.body.classList.remove("rb")},8000)}}
+ if(kSeq.slice(-6).join("")==="aotoka"){kSeq=[];confetti({mode:"snow"});confetti();toast("🎨 あおとかです。いつもありがとう！")}
+  if(kSeq.join()===KON.join()){kSeq=[];confetti();confetti({mode:"rain"});toast("🎮 コマンド発動！");if(!S.rm&&S.fx!==false){document.body.classList.add("rb");setTimeout(function(){if(!running)document.body.classList.remove("rb")},8000)}}
 });
 $("sbb").onclick=function(){openSB(S.mode==="daily"?"daily":S.lv,S.ohk)};
 $("sbq").onclick=function(){adminOut();sbOff=0;adminUI();renderAnn();renderSB("ログアウトしました")};
@@ -1282,13 +1381,14 @@ $("dy").onclick=function(){
  if(!pendDel)return;$("dy").disabled=true;$("dme").textContent="削除中…";
  deleteEntry(pendDel).then(function(){$("dm").classList.remove("on");renderSB("削除しました")}).catch(function(err){console.error(err);$("dy").disabled=false;$("dme").textContent="削除できませんでした（"+((err&&err.message)||"通信エラー")+"）"});
 };
+$("mta").onclick=function(){$("admo").onclick()};
 $("admo").onclick=function(){$("hp").classList.remove("on");$("aer").textContent="";$("ap").value="";$("am").classList.add("on")};
 $("ax").onclick=function(){$("am").classList.remove("on");$("ap").value=""};
 $("ay").onclick=function(){
  var e=$("ae").value.trim(),p=$("ap").value;
  if(!e||!p){$("aer").textContent="メールアドレスとパスワードを入力してください";return}
  $("aer").textContent="確認中…";$("ay").disabled=true;
- adminLogin(e,p).then(function(){$("ay").disabled=false;$("ap").value="";$("am").classList.remove("on");adminUI();annLoad();openSB(S.lv,S.ohk,"管理者としてログインしました")}).catch(function(err){
+ adminLogin(e,p).then(function(){$("ay").disabled=false;$("ap").value="";$("am").classList.remove("on");adminUI();renderMaint();annLoad();openSB(S.lv,S.ohk,"管理者としてログインしました")}).catch(function(err){
   $("ay").disabled=false;var m=(err&&err.message)||"";
   $("aer").textContent=m==="NOT_ADMIN"?"このアカウントには管理者権限がありません":/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(m)?"メールアドレスまたはパスワードが正しくありません":"ログインできませんでした（"+(m||"通信エラー")+"）";
  });
